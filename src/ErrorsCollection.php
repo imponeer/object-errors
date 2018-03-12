@@ -3,17 +3,53 @@
 namespace ImpressPHP\ObjectErrors;
 
 use ArrayAccess;
-use Iterator;
+use Countable;
+use JsonSerializable;
+use Serializable;
 
-class ErrorsCollection implements ArrayAccess, Iterator
+/**
+ * Collection of errors
+ *
+ * @package ImpressPHP\ObjectErrors
+ */
+class ErrorsCollection implements ArrayAccess, Countable, Serializable, JsonSerializable
 {
+	/**
+	 * Mode that says that only one param for adding is used
+	 */
+	const MODE_1_PARAM = 0;
 
     /**
+	 * Mode that says two params are used
+	 */
+	const MODE_2_PARAMS = 1;
+
+	/**
+	 * Mode that says that 2nd param is a used as prefix
+	 */
+	const MODE_2_AS_PREFIX = 2;
+	/**
+	 * Mode how this errors collection works
+	 *
+	 * @var int
+	 */
+	public $mode = self::MODE_1_PARAM;
+	/**
      * Errors data
      *
      * @var array
      */
     private $errors = [];
+
+	/**
+	 * ErrorsCollection constructor.
+	 *
+	 * @param int $mode
+	 */
+	public function __construct($mode = self::MODE_1_PARAM)
+	{
+		$this->mode = $mode;
+	}
 
     /**
      * Checks if offset exists
@@ -62,59 +98,13 @@ class ErrorsCollection implements ArrayAccess, Iterator
     }
 
     /**
-     * Gets current error msg
-     *
-     * @return string
-     */
-    public function current()
-    {
-        return current($this->errors);
-    }
-
-    /**
-     * Gets cuurrent offset
-     *
-     * @return mixed
-     */
-    public function key()
-    {
-        return key($this->errors);
-    }
-
-    /**
-     * Moves internal pointer by one position
-     */
-    public function next()
-    {
-        next($this->errors);
-    }
-
-    /**
-     * Moves internal cursor at start
-     */
-    public function rewind()
-    {
-        rewind($this->errors);
-    }
-
-    /**
-     * Is position valid?
+	 * Is empty?
      *
      * @return bool
      */
-    public function valid()
+	public function isEmpty()
     {
-        return true;
-    }
-
-    /**
-     * Do we have some errors?
-     *
-     * @return bool
-     */
-    public function has()
-    {
-        return empty($this->errors) === false;
+		return empty($this->errors);
     }
 
     /**
@@ -152,17 +142,67 @@ class ErrorsCollection implements ArrayAccess, Iterator
     }
 
     /**
-     * Add an error
+	 * Adds an
      *
-     * @param string $err_str error to add
+	 * @param array ...$err_data
      */
-    public function add($err_str)
+	public function add(...$err_data)
     {
-        if (func_num_args() > 1) {
-            list($id, $err_str) = func_get_args();
-            $this->errors[$id] = trim($err_str);
-        } else {
-            $this->errors[] = trim($err_str);
+		switch ($this->mode) {
+			case self::MODE_1_PARAM:
+				$this->errors[] = $err_data[0];
+				break;
+			case self::MODE_2_AS_PREFIX:
+				if (is_array($err_data[0])) {
+					if (!isset($err_data[1])) {
+						$err_data[1] = false;
+					}
+					foreach ($err_data[0] as $str) {
+						$this->add($str, $err_data[1]);
+					}
+					return;
+				}
+				if (isset($err_data[1]) && ($err_data[1] !== false)) {
+					$err_data[0] = "[" . $err_data[1] . "] " . $err_data[0];
+				}
+				$this->errors[] = $err_data[0];
+				break;
+			case self::MODE_2_PARAMS:
+				$this->errors[trim($err_data[0])] = trim($err_data[1]);
+				break;
         }
     }
+
+	/**
+	 * @inheritDoc
+	 */
+	public function count()
+	{
+		return count($this->errors);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function serialize()
+	{
+		return serialize($this->errors);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	public function unserialize($serialized)
+	{
+		$this->errors = unserialize($serialized);
+	}
+
+	/**
+	 * @inheritDoc
+	 */
+	function jsonSerialize()
+	{
+		return $this->errors;
+	}
+
 }

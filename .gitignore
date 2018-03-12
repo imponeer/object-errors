@@ -1,2 +1,7 @@
-/vendor/
-.idea
+/.settings
+/.buildpath
+/.project
+/.idea
+*.bak
+vendor/
+*.lock
