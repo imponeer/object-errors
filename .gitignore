@@ -3,5 +3,5 @@
 /.project
 /.idea
 *.bak
-vendor/
+/vendor/
 *.lock
