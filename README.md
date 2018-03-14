@@ -1,6 +1,8 @@
 [![License](https://img.shields.io/github/license/imponeer/object-errors.svg?maxAge=2592000)](LICENSE)
-[![GitHub release](https://img.shields.io/github/release/imponeer/object-errors.svg?maxAge=2592000)](https://github.com/imponeer/object-errors/releases) [![Build Status](https://travis-ci.org/imponeer/object-errors.svg?branch=master)](https://travis-ci.org/imponeer/object-errors) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/imponeer/object-errors/badges/quality-score.png)](https://scrutinizer-ci.com/g/imponeer/object-errors/) 
-![PHP from Packagist](https://img.shields.io/packagist/php-v/imponeer/object-errors.svg)
+ [![Build Status](https://travis-ci.org/imponeer/object-errors.svg?branch=master)](https://travis-ci.org/imponeer/object-errors) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/imponeer/object-errors/badges/quality-score.png)](https://scrutinizer-ci.com/g/imponeer/object-errors/) 
+![PHP from Packagist](https://img.shields.io/packagist/php-v/imponeer/object-errors.svg) 
+[![Packagist](https://img.shields.io/packagist/v/imponeer/object-errors.svg)](https://packagist.org/packages/imponeer/object-errors)
+
 
 
 # Object Errors
