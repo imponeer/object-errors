@@ -1,5 +1,5 @@
-[![License](https://img.shields.io/github/license/IPFLibraries/object-errors.svg?maxAge=2592000)](License.txt)
-[![GitHub release](https://img.shields.io/github/release/IPFLibraries/object-errors.svg?maxAge=2592000)](https://github.com/IPFLibraries/object-errors/releases) [![Build Status](https://travis-ci.org/IPFLibraries/object-errors.svg?branch=master)](https://travis-ci.org/IPFLibraries/object-errors) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/IPFLibraries/object-errors/badges/quality-score.png)](https://scrutinizer-ci.com/g/IPFLibraries/object-errors/)
+[![License](https://img.shields.io/github/license/imponeer/object-errors.svg?maxAge=2592000)](License.txt)
+[![GitHub release](https://img.shields.io/github/release/imponeer/object-errors.svg?maxAge=2592000)](https://github.com/imponeer/object-errors/releases) [![Build Status](https://travis-ci.org/imponeer/object-errors.svg?branch=master)](https://travis-ci.org/imponeer/object-errors) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/imponeer/object-errors/badges/quality-score.png)](https://scrutinizer-ci.com/g/imponeer/object-errors/)
 
 # Object Errors
 
@@ -7,17 +7,19 @@ Library that can be used for collecting errors on objects.
 
 ## Installation
 
+To install and use this package, we recommend to use [Composer])(https://getcomposer.org):
+
 ```bash
-composer require ipf-libraries/object-errors
+composer require imponeer/object-errors
 ```
 
-## Usage
+Otherwise you need to include manualy files from `src/` directory. 
 
-Simply way to start using is this lib is here:
+## Example
 
 ```php
 
-use IPFLibraries/ObjectErrors/ErrorsCollection;
+use Imponeer/ObjectErrors/ErrorsCollection;
 
 class Object {
 

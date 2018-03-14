@@ -1,7 +1,11 @@
 <?php
 
-namespace ImpressPHP\ObjectErrors;
+namespace Imponeer\ObjectErrors;
 
+/**
+ * Trait that can be used when replacing old ImpressCMS or it's modules code
+ * Or maybe somewhere else... if you want it!
+ */
 trait ErrorsTrait
 {
 

@@ -1,6 +1,6 @@
 <?php
 
-namespace ImpressPHP\ObjectErrors;
+namespace Imponeer\ObjectErrors;
 
 use ArrayAccess;
 use Countable;
@@ -9,8 +9,6 @@ use Serializable;
 
 /**
  * Collection of errors
- *
- * @package ImpressPHP\ObjectErrors
  */
 class ErrorsCollection implements ArrayAccess, Countable, Serializable, JsonSerializable
 {

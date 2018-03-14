@@ -9,3 +9,21 @@ php:
 script: |
   composer install --optimize-autoloader --no-suggest
   phpunit
+
+after_success: |
+  echo "$TRAVIS_BRANCH";
+  if [[ "$TRAVIS_BRANCH" == "master" ]]; then
+    vendor/bin/phpdoc  -d src/ -t $TRAVIS_BUILD_DIR/xml-docs/ --template="xml"
+    vendor/bin/phpdocmd $TRAVIS_BUILD_DIR/xml-docs/structure.xml $TRAVIS_BUILD_DIR/docs/
+    git checkout git@github.com:$TRAVIS_REPO_SLUG.wiki.git $TRAVIS_BUILD_DIR/old-docs/
+    mv $TRAVIS_BUILD_DIR/old-docs/.git $TRAVIS_BUILD_DIR/docs/.git
+    pushd $TRAVIS_BUILD_DIR/docs
+	git status
+	git add *
+	git commit -m "$TRAVIS_COMMIT_MESSAGE"
+	git push
+    popd
+    rm -rf $TRAVIS_BUILD_DIR/docs
+    rm -rf $TRAVIS_BUILD_DIR/old-docs
+    rm -rf $TRAVIS_BUILD_DIR/xml-docs
+  fi;

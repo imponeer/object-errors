@@ -1,6 +1,6 @@
 <?php
 
-namespace ImpressPHP\ObjectErrors;
+namespace Imponeer\ObjectErrors;
 
 use Exception;
 
