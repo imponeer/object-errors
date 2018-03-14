@@ -16,7 +16,7 @@ after_success: |
     rm -rf .git
     vendor/bin/phpdoc  -d src/ -t xml-docs/ --template="xml"
     vendor/bin/phpdocmd xml-docs/structure.xml docs/
-    git checkout https://github.com/$TRAVIS_REPO_SLUG.wiki.git old-docs/
+    git clone https://github.com/$TRAVIS_REPO_SLUG.wiki.git old-docs/
     mv -v old-docs/.git docs/
     cd docs
         git status
