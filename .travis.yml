@@ -6,6 +6,12 @@ php:
   - 7.1
   - 7.2
 
+# GH_TOKEN=my_github_token | travis encrypt --add
+env:
+  global:
+    secure: w5IsCrAfbQWUTVDnyzasGiWFL+9nm/jnk8BFVcqCjFuaZVXuhQe1v0ZJSaQj0Ush5COPiVBx9gjOtADK53010PLdUFjGhVI/Y8ZoArYM9C+6BAId6kbJTMNoCNfoLug/mhf+XhZS3WTU/2PTjoc61IstqoT2SM5xVeCMBqdwGDSK6nUztexMgzTzxhCGNibTekhUcpdEVoTJ/vZXXlHlfJtLThnImBzXXX5H8Bu1pjX188xx2Q7y4iB46QfBEXdFFcNC5wJD7+DbNelZkhDTgb/sisuJheVRbDAQXGe8YvoY6cv+OFoEzpKlPqfFwwoIPtgk/R3eKAXh43XvAn9GwqSwoqooIRJWTcsztgsfi/VYN/qfTlIZ+FyEWJtd6gSMublwHsgJj3EpLhKNKRnbaK0w9m4NFrXWqBghn5nuEhkUKjLUHqYFSFn5H+4kVHrk9WVEkJCeYi1kT9FiyDGHB/lepI8yY1ykfmSzHPVoQG6W/ITZDCjBmPoxBm28p/t1sjznaWqAgg/uYVc+doJsEgOV1ANL92GzIU4NdvkEz2BnjQOTrKM3rQyd/vbN6cv3Hww0HF50HrWB6TFOMpboGQTu3JLErUEDjw2e4RFMzSXtTgewmh7f73rnBSLfhKG7YllvIUCqVIPDkniwcQr/ILYc8ETi4svZGe+XQo5Xeu8=
+
+
 script: |
   composer install --optimize-autoloader --no-suggest
   phpunit
@@ -17,7 +23,7 @@ after_success: |
     vendor/bin/phpdoc -d src/ -t .docs.xml/ --template=xml
     mkdir -p docs
     vendor/bin/phpdocmd .docs.xml/structure.xml docs
-    git clone https://github.com/$TRAVIS_REPO_SLUG.wiki.git .docs.old/
+    git clone https://${GH_TOKEN}@github.com/$TRAVIS_REPO_SLUG.wiki.git .docs.old/
     mv -v .docs.old/.git docs/
     cd docs
     git status
