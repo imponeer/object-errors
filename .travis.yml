@@ -28,11 +28,14 @@ after_success: |
     git config --global user.email "travis@travis-ci.org"
     git config --global user.name "Travis CI"
     git remote add pplace https://${GH_TOKEN}@github.com/$TRAVIS_REPO_SLUG.wiki.git
+    git remote -v
     mv ApiIndex.md Home.md
     git status
     git add *.md
+    git status
     git commit -m "$TRAVIS_COMMIT_MESSAGE"
-    git push --set-upstream pplace
+    git status
+    git push pplace
     ls -a
     cd ..
     rm -rf docs .docs.old .docs.xml
