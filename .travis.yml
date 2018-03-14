@@ -18,10 +18,10 @@ after_success: |
     git checkout git@github.com:$TRAVIS_REPO_SLUG.wiki.git $TRAVIS_BUILD_DIR/old-docs/
     mv $TRAVIS_BUILD_DIR/old-docs/.git $TRAVIS_BUILD_DIR/docs/.git
     pushd $TRAVIS_BUILD_DIR/docs
-	git status
-	git add *
-	git commit -m "$TRAVIS_COMMIT_MESSAGE"
-	git push
+        git status
+        git add *
+        git commit -m "$TRAVIS_COMMIT_MESSAGE"
+        git push
     popd
     rm -rf $TRAVIS_BUILD_DIR/docs
     rm -rf $TRAVIS_BUILD_DIR/old-docs
