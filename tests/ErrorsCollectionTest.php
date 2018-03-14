@@ -1,8 +1,8 @@
 <?php
-namespace ImpressPHP\Tests\ObjectErrors;
+namespace Imponeer\Tests\ObjectErrors;
 
-use ImpressPHP\ObjectErrors\ErrorsCollection;
-use ImpressPHP\ObjectErrors\UnsetErrorException;
+use Imponeer\ObjectErrors\ErrorsCollection;
+use Imponeer\ObjectErrors\UnsetErrorException;
 use PHPUnit\Framework\TestCase;
 
 class ErrorsCollectionTest extends TestCase

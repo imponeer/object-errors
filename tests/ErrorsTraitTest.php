@@ -1,7 +1,7 @@
 <?php
-namespace ImpressPHP\Tests\ObjectErrors;
+namespace Imponeer\Tests\ObjectErrors;
 
-use ImpressPHP\ObjectErrors\ErrorsTrait;
+use Imponeer\ObjectErrors\ErrorsTrait;
 use Mockery;
 use PHPUnit\Framework\TestCase;
 
