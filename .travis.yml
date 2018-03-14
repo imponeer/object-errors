@@ -13,29 +13,18 @@ script: |
 after_success: |
   if [[ "$TRAVIS_BRANCH" == "master" ]]; then
     echo Building documentation...
-    echo Step #1
     rm -rf .git
-    echo Step #2
-    vendor/bin/phpdoc  -d src/ -t xml-docs/ --template="xml"
-    echo Step #3
-    vendor/bin/phpdocmd xml-docs/structure.xml docs/
-    echo Step #4
-    git clone https://github.com/$TRAVIS_REPO_SLUG.wiki.git old-docs/
-    echo Step #5
-    mv -v old-docs/.git docs/
-    echo Step #6
+    vendor/bin/phpdoc -d src/ -t .docs.xml/ --template=xml
+    mkdir -p docs
+    vendor/bin/phpdocmd .docs.xml/structure.xml docs
+    git clone https://github.com/$TRAVIS_REPO_SLUG.wiki.git .docs.old/
+    mv -v .docs.old/.git docs/
     cd docs
-    echo Step #7
     git status
-    echo Step #8
     git add *
-    echo Step #9
     git commit -m "$TRAVIS_COMMIT_MESSAGE"
-    echo Step #10
     git push
     ls -a
-    echo Step #11
     cd ..
-    echo Step #12
-    rm -rf docs old-docs xml-docs
+    rm -rf docs .docs.old .docs.xml
   fi;
