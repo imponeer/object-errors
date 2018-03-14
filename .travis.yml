@@ -1,21 +1,13 @@
 language: php
-
 php:
-  - 5.6
-  - 7.0
-  - 7.1
-  - 7.2
-
-# GH_TOKEN=my_github_token | travis encrypt --add
-env:
-  global:
-    secure: w5IsCrAfbQWUTVDnyzasGiWFL+9nm/jnk8BFVcqCjFuaZVXuhQe1v0ZJSaQj0Ush5COPiVBx9gjOtADK53010PLdUFjGhVI/Y8ZoArYM9C+6BAId6kbJTMNoCNfoLug/mhf+XhZS3WTU/2PTjoc61IstqoT2SM5xVeCMBqdwGDSK6nUztexMgzTzxhCGNibTekhUcpdEVoTJ/vZXXlHlfJtLThnImBzXXX5H8Bu1pjX188xx2Q7y4iB46QfBEXdFFcNC5wJD7+DbNelZkhDTgb/sisuJheVRbDAQXGe8YvoY6cv+OFoEzpKlPqfFwwoIPtgk/R3eKAXh43XvAn9GwqSwoqooIRJWTcsztgsfi/VYN/qfTlIZ+FyEWJtd6gSMublwHsgJj3EpLhKNKRnbaK0w9m4NFrXWqBghn5nuEhkUKjLUHqYFSFn5H+4kVHrk9WVEkJCeYi1kT9FiyDGHB/lepI8yY1ykfmSzHPVoQG6W/ITZDCjBmPoxBm28p/t1sjznaWqAgg/uYVc+doJsEgOV1ANL92GzIU4NdvkEz2BnjQOTrKM3rQyd/vbN6cv3Hww0HF50HrWB6TFOMpboGQTu3JLErUEDjw2e4RFMzSXtTgewmh7f73rnBSLfhKG7YllvIUCqVIPDkniwcQr/ILYc8ETi4svZGe+XQo5Xeu8=
-
+- 5.6
+- 7.0
+- 7.1
+- 7.2
 script: |
   composer install --optimize-autoloader --no-suggest
   phpunit
-
-after_success: |
+after_success: |-
   if [[ "$TRAVIS_BRANCH" == "master" ]]; then
     echo Building documentation...
     rm -rf .git
@@ -35,3 +27,6 @@ after_success: |
     cd ..
     rm -rf docs .docs.old .docs.xml
   fi;
+env:
+  global:
+    secure: sHLGg2VWqUAE7aRD7QyrET/MN4XLZKmVaVtEb0E3odpuJCqiAzouudj/92FW9pJ4Y9gqyMMSiGwTjrbAchNkt90+9tTGVbc27bN2+F5PI1ItHhEISn4UNR8nPUdY0mpq7r0BxxlN38eoeS5xzYdG5Syh6W47Ix6PcVzndBLIUHfVZzey2QkeYDE3zIE82JFQNb7Eds32eGulCU6CsdcggcKwRIPgN9pFFC/nhsWyY1F0l5AnRVH8sSx8pkgwm7tia2G95LDjwxGzfdD2gs5r4Ue97E0oppB78Xf5Oudb7fLa/8mKwrs0hnFCDAKcYsg68NG/7MRN9tDjIHVGwulGi8kkUpBGwO9YGbzvpBN4NeaNPMvTXb/Peo6uwF5uQK+r8pNg19+cx5HfQifDwJbKGD873xkIj9gyskAEUBRa1OpXPG6YVxQjXxsQeO9uXpnd/adH9J4EWgaEGSrqFsK0aUcAoqFE5H4FEB6TZK40kJJ0+YgL6koy4MVcJMszRDOxZ6yTjpqv7r9Ua+xy+p6TK4MrOYbxrD3rLK48AObE1/Gkq4GPAT98zJGsqfaHDb2ANiy6B4UZwXpyTRJEujgCQHsVJ0r3uYq81oxe9I6AyZuF9W58IUETy20PX09Vrd7CwHnO1UwUHeIrlqcpZr7PiliZACf5iYtOFq6UWSrZXRI=
