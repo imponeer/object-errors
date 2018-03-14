@@ -5,11 +5,9 @@ use Imponeer\ObjectErrors\ErrorsCollection;
 use Imponeer\ObjectErrors\UnsetErrorException;
 use PHPUnit\Framework\TestCase;
 
-class ErrorsCollectionTest extends TestCase
-{
+class ErrorsCollectionTest extends TestCase {
 
-	public function testConstructorParams()
-	{
+	public function testConstructorParams() {
 		foreach ([
 					 ErrorsCollection::MODE_1_PARAM,
 					 ErrorsCollection::MODE_2_AS_PREFIX,
@@ -30,8 +28,7 @@ class ErrorsCollectionTest extends TestCase
 		);
 	}
 
-	public function testImplements()
-	{
+	public function testImplements() {
 		$instance = new ErrorsCollection();
 		$this->assertInstanceOf(\ArrayAccess::class, $instance, 'ErrorsCollection must implement ArrayAccess');
 		$this->assertInstanceOf(\JsonSerializable::class, $instance, 'ErrorsCollection must implement JsonSerializable');
@@ -39,8 +36,7 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertInstanceOf(\Serializable::class, $instance, 'ErrorsCollection must implement Serializable');
 	}
 
-	public function testOffsetExists()
-	{
+	public function testOffsetExists() {
 		$instance = new ErrorsCollection(ErrorsCollection::MODE_2_PARAMS);
 		$key = crc32(time());
 		$this->assertArrayNotHasKey(
@@ -56,8 +52,7 @@ class ErrorsCollectionTest extends TestCase
 		);
 	}
 
-	public function testOffsetGet()
-	{
+	public function testOffsetGet() {
 		$offset = crc32(time());
 		$data = sha1(time());
 
@@ -69,8 +64,7 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertNotSame($instance->offsetGet($offset), null, 'Data is not same #4');
 	}
 
-	public function testOffsetSet()
-	{
+	public function testOffsetSet() {
 		$offset = crc32(time());
 		$data = sha1(time());
 
@@ -96,8 +90,7 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertSame($instance[$offset], $ndata, 'Changed data is not same as readed one #4');
 	}
 
-	public function testOffsetUnset()
-	{
+	public function testOffsetUnset() {
 		$offset = crc32(time());
 
 		$instance = new ErrorsCollection(ErrorsCollection::MODE_2_PARAMS);
@@ -116,8 +109,7 @@ class ErrorsCollectionTest extends TestCase
 		$this->expectException(null);
 	}
 
-	public function testIsEmpty()
-	{
+	public function testIsEmpty() {
 		$instance = new ErrorsCollection();
 		$this->assertTrue($instance->isEmpty(), 'Is not empty after creation');
 
@@ -125,16 +117,14 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertNotTrue($instance->isEmpty(), 'Is still empty after one element was added');
 	}
 
-	public function testClear()
-	{
+	public function testClear() {
 		$instance = new ErrorsCollection();
 		$instance->add(crc32(time()));
 		$instance->clear();
 		$this->assertEmpty($instance, 'Clear() must clear');
 	}
 
-	public function testStringConversion()
-	{
+	public function testStringConversion() {
 		$instance = new ErrorsCollection();
 
 		$this->assertEmpty((string)$instance, 'Converted to string empty ErrorsCollection must be empty');
@@ -147,8 +137,7 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertInternalType('string', $instance->getHtml(), 'getHTML must generate strings');
 	}
 
-	public function testCount()
-	{
+	public function testCount() {
 		$instance = new ErrorsCollection();
 		$this->assertSame($instance->count(), 0, 'Count is not 0 when collection was just created');
 
@@ -158,8 +147,7 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertCount(1, $instance, 'Count function doesn\'t work');
 	}
 
-	public function testAdd()
-	{
+	public function testAdd() {
 		$instance = new ErrorsCollection(ErrorsCollection::MODE_1_PARAM);
 		$instance->add(md5(time()));
 		$this->assertArrayHasKey(0, $instance, 'With MODE_1_PARAM after adding element first element must be with index 0');
@@ -174,8 +162,7 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertArrayHasKey($key, $instance, 'With MODE_2_PARAMS after adding element first element must be with index same as added key');
 	}
 
-	public function testSerialization()
-	{
+	public function testSerialization() {
 		$instance = new ErrorsCollection();
 
 		$instance->mode = ErrorsCollection::MODE_2_PARAMS;
