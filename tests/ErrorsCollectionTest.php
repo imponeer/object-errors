@@ -127,12 +127,12 @@ class ErrorsCollectionTest extends TestCase {
 	public function testStringConversion() {
 		$instance = new ErrorsCollection();
 
-		$this->assertEmpty((string)$instance, 'Converted to string empty ErrorsCollection must be empty');
+		$this->assertEmpty((string) $instance, 'Converted to string empty ErrorsCollection must be empty');
 		$this->assertEmpty($instance->getHtml(), 'Converted to HTML empty ErrorsCollection must be empty');
 
 		$instance->add(crc32(time()));
 
-		$this->assertNotEmpty((string)$instance, 'Converted to string not empty ErrorsCollection must be not empty');
+		$this->assertNotEmpty((string) $instance, 'Converted to string not empty ErrorsCollection must be not empty');
 		$this->assertNotEmpty($instance->getHtml(), 'Converted to HTML not empty ErrorsCollection must be not empty');
 		$this->assertInternalType('string', $instance->getHtml(), 'getHTML must generate strings');
 	}
