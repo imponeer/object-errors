@@ -7,7 +7,7 @@ Library that can be used for collecting errors on objects.
 
 ## Installation
 
-To install and use this package, we recommend to use [Composer])(https://getcomposer.org):
+To install and use this package, we recommend to use [Composer](https://getcomposer.org):
 
 ```bash
 composer require imponeer/object-errors
