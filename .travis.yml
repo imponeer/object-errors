@@ -17,12 +17,13 @@ after_success: |
     vendor/bin/phpdoc  -d src/ -t xml-docs/ --template="xml"
     vendor/bin/phpdocmd xml-docs/structure.xml docs/
     git checkout https://github.com/$TRAVIS_REPO_SLUG.wiki.git old-docs/
-    mv old-docs/.git docs/.git
+    mv -v old-docs/.git docs/
     cd docs
         git status
         git add *
         git commit -m "$TRAVIS_COMMIT_MESSAGE"
         git push
+	ls -a
     cd ..
     rm -rf docs old-docs xml-docs
   fi;
