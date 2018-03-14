@@ -15,6 +15,9 @@ after_success: |-
     mkdir -p docs
     vendor/bin/phpdocmd .docs.xml/structure.xml docs
     git clone https://${GH_TOKEN}@github.com/$TRAVIS_REPO_SLUG.wiki.git .docs.old/
+    cd .docs.old
+    git rm *.md
+    cd ..
     mv -v .docs.old/.git docs/
     cd docs
     git config --global user.email "travis@travis-ci.org"
