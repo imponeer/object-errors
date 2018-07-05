@@ -1,5 +1,5 @@
 [![License](https://img.shields.io/github/license/imponeer/object-errors.svg?maxAge=2592000)](LICENSE)
- [![Build Status](https://travis-ci.org/imponeer/object-errors.svg?branch=master)](https://travis-ci.org/imponeer/object-errors) [![Scrutinizer Code Quality](https://scrutinizer-ci.com/g/imponeer/object-errors/badges/quality-score.png)](https://scrutinizer-ci.com/g/imponeer/object-errors/) [![Packagist](https://img.shields.io/packagist/v/imponeer/object-errors.svg)](https://packagist.org/packages/imponeer/object-errors) [![PHP](https://img.shields.io/packagist/php-v/imponeer/object-errors.svg)](http://php.net) 
+ [![Build Status](https://travis-ci.org/imponeer/object-errors.svg?branch=master)](https://travis-ci.org/imponeer/object-errors) [![Maintainability](https://api.codeclimate.com/v1/badges/1ce93e64824a1c7b519a/maintainability)](https://codeclimate.com/github/imponeer/object-errors/maintainability) [![Packagist](https://img.shields.io/packagist/v/imponeer/object-errors.svg)](https://packagist.org/packages/imponeer/object-errors) [![PHP](https://img.shields.io/packagist/php-v/imponeer/object-errors.svg)](http://php.net) 
 [![Packagist](https://img.shields.io/packagist/dm/imponeer/object-errors.svg)](https://packagist.org/packages/imponeer/object-errors)
 
 # Object Errors
