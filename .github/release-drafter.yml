@@ -14,5 +14,3 @@ change-template: '- $TITLE @$AUTHOR (#$NUMBER)'
 template: |
   ## What's Changed
   $CHANGES
-Footer
-© 2022 GitHub, Inc.
