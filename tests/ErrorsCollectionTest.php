@@ -134,7 +134,12 @@ class ErrorsCollectionTest extends TestCase {
 
 		$this->assertNotEmpty((string) $instance, 'Converted to string not empty ErrorsCollection must be not empty');
 		$this->assertNotEmpty($instance->getHtml(), 'Converted to HTML not empty ErrorsCollection must be not empty');
-		$this->assertIsString($instance->getHtml(), 'getHTML must generate strings');
+
+		if (method_exists($this, 'assertIsString')) {
+			$this->assertIsString($instance->getHtml(), 'getHTML must generate strings');
+		} else {
+			$this->assertInternalType('string', $instance->getHtml(), 'getHTML must generate strings');
+		}
 	}
 
 	public function testCount() {
@@ -175,8 +180,13 @@ class ErrorsCollectionTest extends TestCase {
 		$this->assertSame($instance->mode, $unserialized->mode, 'Serialization-unserialization fails #1');
 		$this->assertSame($instance->toArray(), $unserialized->toArray(), 'Serialization-unserialization fails #2');
 
-		$this->assertIsArray($instance->toArray(), 'toArray doesn\'t makes an array');
-		$this->assertIsString($instance->toJson(), 'toJSON doesn\'t makes a string');
+		if (method_exists($this, 'assertIsString')) {
+			$this->assertIsArray($instance->toArray(), 'toArray doesn\'t makes an array');
+			$this->assertIsString($instance->toJson(), 'toJSON doesn\'t makes a string');
+		} else {
+			$this->assertInternalType('array', $instance->toArray(), 'toArray doesn\'t makes an array');
+			$this->assertInternalType('string', $instance->toJson(), 'toJSON doesn\'t makes a string');
+		}
 	}
 
 }

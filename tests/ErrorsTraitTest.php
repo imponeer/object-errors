@@ -26,25 +26,51 @@ class ErrorsTraitTest extends TestCase
 	{
 		$mock = $this->createTraitMock();
 
-		$this->assertIsArray(
-			$mock->getErrors(false),
-			'getErrors without param must return array'
-		);
+		if (method_exists($this, 'assertIsString')) {
 
-		$this->assertIsString(
-			$mock->getErrors(true),
-			'getErrors without param must return string'
-		);
+			$this->assertIsArray(
+				$mock->getErrors(false),
+				'getErrors without param must return array'
+			);
+
+			$this->assertIsString(
+				$mock->getErrors(true),
+				'getErrors without param must return string'
+			);
+
+		} else {
+
+			$this->assertInternalType(
+				'array',
+				$mock->getErrors(false),
+				'getErrors without param must return array'
+			);
+
+			$this->assertInternalType(
+				'string',
+				$mock->getErrors(true),
+				'getErrors without param must return string'
+			);
+
+		}
 	}
 
 	public function testGetHtmlErrors()
 	{
 		$mock = $this->createTraitMock();
 
-		$this->assertIsString(
-			$mock->getHtmlErrors(),
-			'getErrors without param must return array'
-		);
+		if (method_exists($this, 'assertIsString')) {
+			$this->assertIsString(
+				$mock->getHtmlErrors(),
+				'getErrors without param must return array'
+			);
+		} else {
+			$this->assertInternalType(
+				'string',
+				$mock->getHtmlErrors(),
+				'getErrors without param must return array'
+			);
+		}
 	}
 
 	public function testHasAndSetError()
