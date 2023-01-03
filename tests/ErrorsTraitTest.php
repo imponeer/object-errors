@@ -77,10 +77,18 @@ class ErrorsTraitTest extends TestCase
 	{
 		$mock = $this->createTraitMock();
 
-		$this->assertIsBool(
-			$mock->hasError(),
-			'hasError method should return bool'
-		);
+		if (method_exists($this, 'assertIsBool')) {
+			$this->assertIsBool(
+				$mock->hasError(),
+				'hasError method should return bool'
+			);
+		} else {
+			$this->assertInternalType(
+				'bool',
+				$mock->hasError(),
+				'hasError method should return bool'
+			);
+		}
 		$this->assertFalse(
 			$mock->hasError(),
 			'When there are no errors hasError should return false'
