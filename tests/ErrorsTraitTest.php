@@ -8,40 +8,97 @@ use PHPUnit\Framework\TestCase;
 class ErrorsTraitTest extends TestCase
 {
 
+	/**
+	 * Creates mock for ErrorsTrait
+	 *
+	 * @return Mockery\Mock|ErrorsTrait
+	 *
+	 * @noinspection PhpReturnDocTypeMismatchInspection
+	 */
+	protected function createTraitMock() {
+		$mock = Mockery::mock(ErrorsTrait::class)->makePartial();
+		$mock->__construct();
+
+		return $mock;
+	}
+
 	public function testGetErrors()
 	{
-		$mock = Mockery::mock(ErrorsTrait::class)->makePartial();
-		$mock->shouldReceive('getErrors')->withArgs([false])->once()->andReturnUsing(
-			function ($ret) {
-				$this->assertInternalType('array', $ret, 'getErrors without param must return array');
-			}
-		);
-		$mock->shouldReceive('getErrors')->withArgs([true])->once()->andReturnUsing(
-			function ($ret) {
-				$this->assertInternalType('string', $ret, 'getErrors without param must return string');
-			}
-		);
+		$mock = $this->createTraitMock();
+
+		if (method_exists($this, 'assertIsString')) {
+
+			$this->assertIsArray(
+				$mock->getErrors(false),
+				'getErrors without param must return array'
+			);
+
+			$this->assertIsString(
+				$mock->getErrors(true),
+				'getErrors without param must return string'
+			);
+
+		} else {
+
+			$this->assertInternalType(
+				'array',
+				$mock->getErrors(false),
+				'getErrors without param must return array'
+			);
+
+			$this->assertInternalType(
+				'string',
+				$mock->getErrors(true),
+				'getErrors without param must return string'
+			);
+
+		}
 	}
 
 	public function testGetHtmlErrors()
 	{
-		$mock = Mockery::mock(ErrorsTrait::class)->makePartial();
-		$mock->shouldReceive('getHtmlErrors')->once()->andReturnUsing(
-			function ($ret) {
-				$this->assertInternalType('string', $ret, 'getErrors without param must return array');
-			}
-		);
+		$mock = $this->createTraitMock();
+
+		if (method_exists($this, 'assertIsString')) {
+			$this->assertIsString(
+				$mock->getHtmlErrors(),
+				'getErrors without param must return array'
+			);
+		} else {
+			$this->assertInternalType(
+				'string',
+				$mock->getHtmlErrors(),
+				'getErrors without param must return array'
+			);
+		}
 	}
 
 	public function testHasAndSetError()
 	{
-		$mock = Mockery::mock(ErrorsTrait::class)->makePartial();
-		$mock->shouldReceive('hasError')->once()->andReturn(0);
-		$mock->shouldReceive('setErrors')
-			->withArgs([md5(time())])
-			->getMock()
-			->shouldReceive('hasError')
-			->andReturn(1);
+		$mock = $this->createTraitMock();
+
+		if (method_exists($this, 'assertIsBool')) {
+			$this->assertIsBool(
+				$mock->hasError(),
+				'hasError method should return bool'
+			);
+		} else {
+			$this->assertInternalType(
+				'bool',
+				$mock->hasError(),
+				'hasError method should return bool'
+			);
+		}
+		$this->assertFalse(
+			$mock->hasError(),
+			'When there are no errors hasError should return false'
+		);
+
+		$mock->setErrors("some errors");
+		$this->assertTrue(
+			$mock->hasError(),
+			'When there are some errors hasError should return true'
+		);
 	}
 
 }
