@@ -134,15 +134,20 @@ class ErrorsCollectionTest extends TestCase {
 
 		$this->assertNotEmpty((string) $instance, 'Converted to string not empty ErrorsCollection must be not empty');
 		$this->assertNotEmpty($instance->getHtml(), 'Converted to HTML not empty ErrorsCollection must be not empty');
-		$this->assertInternalType('string', $instance->getHtml(), 'getHTML must generate strings');
+
+		if (method_exists($this, 'assertIsString')) {
+			$this->assertIsString($instance->getHtml(), 'getHTML must generate strings');
+		} else {
+			$this->assertInternalType('string', $instance->getHtml(), 'getHTML must generate strings');
+		}
 	}
 
 	public function testCount() {
 		$instance = new ErrorsCollection();
-		$this->assertSame($instance->count(), 0, 'Count is not 0 when collection was just created');
+		$this->assertSame(0, $instance->count(), 'Count is not 0 when collection was just created');
 
 		$instance->add(crc32(time()));
-		$this->assertSame($instance->count(), 1, 'Count must be 1 after one element was added');
+		$this->assertSame(1, $instance->count(), 'Count must be 1 after one element was added');
 
 		$this->assertCount(1, $instance, 'Count function doesn\'t work');
 	}
@@ -175,8 +180,13 @@ class ErrorsCollectionTest extends TestCase {
 		$this->assertSame($instance->mode, $unserialized->mode, 'Serialization-unserialization fails #1');
 		$this->assertSame($instance->toArray(), $unserialized->toArray(), 'Serialization-unserialization fails #2');
 
-		$this->assertInternalType('array', $instance->toArray(), 'toArray doesn\'t makes an array');
-		$this->assertInternalType('string', $instance->toJson(), 'toJSON doesn\'t makes a string');
+		if (method_exists($this, 'assertIsString')) {
+			$this->assertIsArray($instance->toArray(), 'toArray doesn\'t makes an array');
+			$this->assertIsString($instance->toJson(), 'toJSON doesn\'t makes a string');
+		} else {
+			$this->assertInternalType('array', $instance->toArray(), 'toArray doesn\'t makes an array');
+			$this->assertInternalType('string', $instance->toJson(), 'toJSON doesn\'t makes a string');
+		}
 	}
 
 }
