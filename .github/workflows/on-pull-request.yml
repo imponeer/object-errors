@@ -26,7 +26,7 @@ jobs:
     name: PHP ${{ matrix.php }}; ${{ matrix.os }}
     steps:
       - name: Setup PHP
-        uses: shivammathur/setup-php@2.24.0
+        uses: shivammathur/setup-php@2.25.1
         with:
           php-version: ${{ matrix.php }}
           extensions: curl, json, mbstring, pcre
