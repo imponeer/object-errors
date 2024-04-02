@@ -21,6 +21,7 @@ jobs:
           - 8.0
           - 8.1
           - 8.2
+          - 8.3
         os:
           - ubuntu-latest
     name: PHP ${{ matrix.php }}; ${{ matrix.os }}
@@ -43,7 +44,19 @@ jobs:
 
   dependabot:
     needs: tests
-    permissions: write-all
+    permissions:
+      actions: write
+      checks: read
+      contents: write
+      deployments: read
+      discussions: read
+      issues: write
+      pages: read
+      packages: read
+      pull-requests: write
+      repository-projects: read
+      security-events: write
+      statuses: write
     runs-on: ubuntu-latest
     # Checking the actor will prevent your Action run failing on non-Dependabot
     # PRs but also ensures that it only does work for Dependabot PRs.
