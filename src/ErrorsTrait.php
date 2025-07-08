@@ -26,7 +26,7 @@ trait ErrorsTrait
      *
      * @param    bool $asHTML Format using HTML?
      *
-     * @return array|string an array of errors
+     * @return array<int|string, string>|string an array of errors
      */
     public function getErrors(bool $asHTML = true): array|string
     {
