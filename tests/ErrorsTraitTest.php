@@ -18,6 +18,8 @@ class ErrorsTraitTest extends TestCase
     {
         $mock = $this->createFakeInstance();
 
+        assert(method_exists($mock, 'getErrors'));
+
         $this->assertIsArray($mock->getErrors(false));
         $this->assertIsString($mock->getErrors(true));
     }
@@ -26,12 +28,17 @@ class ErrorsTraitTest extends TestCase
     {
         $mock = $this->createFakeInstance();
 
+        assert(method_exists($mock, 'getHtmlErrors'));
+
         $this->assertIsString($mock->getHtmlErrors());
     }
 
     public function testHasAndSetError(): void
     {
         $mock = $this->createFakeInstance();
+
+        assert(method_exists($mock, 'hasError'));
+        assert(method_exists($mock, 'setErrors'));
 
         $this->assertIsBool($mock->hasError());
 

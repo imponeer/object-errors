@@ -10,12 +10,15 @@ use Stringable;
 
 /**
  * Collection of errors
+ *
+ * @implements ArrayAccess<int|string, string>
  */
 class ErrorsCollection implements ArrayAccess, Countable, JsonSerializable, Stringable
 {
     /**
      * Errors data
      */
+    /** @var array<int|string, string> */
     private array $errors = [];
 
     /**
@@ -158,29 +161,34 @@ class ErrorsCollection implements ArrayAccess, Countable, JsonSerializable, Stri
 
     public function __serialize(): array
     {
+        /** @var array{ParamsMode, array<int|string, string>} */
         return [
             $this->mode,
             $this->errors
         ];
     }
 
+    /**
+     * @param array{0: ParamsMode, 1: array<int|string, string>} $data
+     */
     public function __unserialize(array $data): void
     {
         [$this->mode, $this->errors] = $data;
     }
 
     /**
-     * @inheritDoc
+     * @return array<int|string, string>
      */
     public function jsonSerialize(): array
     {
+        /** @var array<int|string, string> */
         return $this->errors;
     }
 
     /**
      * Export data to array
      *
-     * @return array
+     * @return array<int|string, string>
      */
     public function toArray(): array
     {
