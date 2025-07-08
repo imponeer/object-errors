@@ -7,6 +7,7 @@ use Imponeer\ObjectErrors\ErrorsCollection;
 use Imponeer\ObjectErrors\ParamsMode;
 use Imponeer\ObjectErrors\UnsetErrorException;
 use JsonException;
+use PHPUnit\Framework\Attributes\DataProvider;
 use PHPUnit\Framework\TestCase;
 
 class ErrorsCollectionTest extends TestCase
@@ -18,20 +19,18 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertSame(
 			ParamsMode::Mode1,
 			$instance->mode,
-			'When creating ErrorsCollection instance default mode should be MODE_1_PARAM, but isn\'t'
+			message: 'When creating ErrorsCollection instance default mode should be MODE_1_PARAM, but isn\'t'
 		);
 	}
 
-	/**
-	 * @dataProvider provideConstructorParams
-	 */
+	#[DataProvider('provideConstructorParams')]
 	public function testConstructorParams(ParamsMode $mode): void
 	{
 		$instance = new ErrorsCollection($mode);
 		$this->assertSame(
 			$mode,
 			$instance->mode,
-			'Mode ' . $mode->name . ' is different after creating instance'
+			message: 'Mode ' . $mode->name . ' is different after creating instance'
 		);
 	}
 
@@ -42,13 +41,13 @@ class ErrorsCollectionTest extends TestCase
 		$this->assertArrayNotHasKey(
 			$key,
 			$instance,
-			'Random key already exists in array but shouldn\'t'
+			message: 'Random key already exists in array but shouldn\'t'
 		);
 		$instance->add($key, crc32(time()));
 		$this->assertArrayHasKey(
 			$key,
 			$instance,
-			'Random key was not found but it should'
+			message: 'Random key was not found but it should'
 		);
 	}
 
@@ -59,10 +58,10 @@ class ErrorsCollectionTest extends TestCase
 
 		$instance = new ErrorsCollection(ParamsMode::Mode2);
 		$instance->add($offset, $data);
-		$this->assertSame($instance[$offset], $data, 'Data is not same #1');
-		$this->assertSame($instance->offsetGet($offset), $data, 'Data is not same #2');
-		$this->assertNotNull($instance[$offset], 'Data is not same #3');
-		$this->assertNotNull($instance->offsetGet($offset), 'Data is not same #4');
+		$this->assertSame($instance[$offset], $data, message: 'Data is not same #1');
+		$this->assertSame($instance->offsetGet($offset), $data, message: 'Data is not same #2');
+		$this->assertNotNull($instance[$offset], message: 'Data is not same #3');
+		$this->assertNotNull($instance->offsetGet($offset), message: 'Data is not same #4');
 	}
 
 	public function testOffsetSet(): void
@@ -75,21 +74,21 @@ class ErrorsCollectionTest extends TestCase
 
 		$ndata = md5(time());
 		$instance[$offset] = $ndata;
-		$this->assertSame($instance[$offset], $ndata, 'Changed data is not same as readed one #1');
+		$this->assertSame($instance[$offset], $ndata, message: 'Changed data is not same as readed one #1');
 
 		$ndata = soundex($ndata);
 		$instance->offsetSet($offset, $ndata);
-		$this->assertSame($instance[$offset], $ndata, 'Changed data is not same as readed one #2');
+		$this->assertSame($instance[$offset], $ndata, message: 'Changed data is not same as readed one #2');
 
 		$offset = md5(microtime(true));
 
 		$ndata = metaphone($ndata);
 		$instance[$offset] = $ndata;
-		$this->assertSame($instance[$offset], $ndata, 'Changed data is not same as readed one #3');
+		$this->assertSame($instance[$offset], $ndata, message: 'Changed data is not same as readed one #3');
 
 		$ndata = soundex($ndata);
 		$instance->offsetSet($offset, $ndata);
-		$this->assertSame($instance[$offset], $ndata, 'Changed data is not same as readed one #4');
+		$this->assertSame($instance[$offset], $ndata, message: 'Changed data is not same as readed one #4');
 	}
 
 	public function testOffsetUnset(): void
@@ -105,10 +104,10 @@ class ErrorsCollectionTest extends TestCase
 	public function testIsEmpty(): void
 	{
 		$instance = new ErrorsCollection();
-		$this->assertTrue($instance->isEmpty(), 'Is not empty after creation');
+		$this->assertTrue($instance->isEmpty(), message: 'Is not empty after creation');
 
 		$instance->add(crc32(time()));
-		$this->assertNotTrue($instance->isEmpty(), 'Is still empty after one element was added');
+		$this->assertNotTrue($instance->isEmpty(), message: 'Is still empty after one element was added');
 	}
 
 	public function testClear(): void
@@ -116,36 +115,36 @@ class ErrorsCollectionTest extends TestCase
 		$instance = new ErrorsCollection();
 		$instance->add(crc32(time()));
 		$instance->clear();
-		$this->assertEmpty($instance, 'Clear() must clear');
+		$this->assertEmpty($instance, message: 'Clear() must clear');
 	}
 
 	public function testStringConversion(): void
 	{
 		$instance = new ErrorsCollection();
 
-		$this->assertEmpty((string)$instance, 'Converted to string empty ErrorsCollection must be empty');
-		$this->assertEmpty($instance->getHtml(), 'Converted to HTML empty ErrorsCollection must be empty');
+		$this->assertEmpty((string)$instance, message: 'Converted to string empty ErrorsCollection must be empty');
+		$this->assertEmpty($instance->getHtml(), message: 'Converted to HTML empty ErrorsCollection must be empty');
 
 		$instance->add(crc32(time()));
 
-		$this->assertNotEmpty((string)$instance, 'Converted to string not empty ErrorsCollection must be not empty');
-		$this->assertNotEmpty($instance->getHtml(), 'Converted to HTML not empty ErrorsCollection must be not empty');
+		$this->assertNotEmpty((string)$instance, message: 'Converted to string not empty ErrorsCollection must be not empty');
+		$this->assertNotEmpty($instance->getHtml(), message: 'Converted to HTML not empty ErrorsCollection must be not empty');
 
-		$this->assertIsString($instance->getHtml(), 'getHTML must generate strings');
+		$this->assertIsString($instance->getHtml(), message: 'getHTML must generate strings');
 	}
 
 	public function testCount(): void
 	{
 		$instance = new ErrorsCollection();
-		$this->assertCount(0, $instance, 'Count is not 0 when collection was just created');
+		$this->assertCount(0, $instance, message: 'Count is not 0 when collection was just created');
 
 		$instance->add(crc32(time()));
-		$this->assertSame(1, $instance->count(), 'Count must be 1 after one element was added');
+		$this->assertSame(1, $instance->count(), message: 'Count must be 1 after one element was added');
 
-		$this->assertCount(1, $instance, 'Count function doesn\'t work');
+		$this->assertCount(1, $instance, message: 'Count function doesn\'t work');
 	}
 
-	public function provideTestAddData(): Generator
+	public static function provideTestAddData(): Generator
 	{
 		yield 'mode1' => [
 			'mode' => ParamsMode::Mode1,
@@ -174,9 +173,7 @@ class ErrorsCollectionTest extends TestCase
 		];
 	}
 
-	/**
-	 * @dataProvider provideTestAddData
-	 */
+	#[DataProvider('provideTestAddData')]
 	public function testAdd(ParamsMode $mode, array $addParams, int|string $expectedKey): void
 	{
 		$instance = new ErrorsCollection($mode);
@@ -196,15 +193,15 @@ class ErrorsCollectionTest extends TestCase
 
 		$serialized = serialize($instance);
 		$unserialized = unserialize($serialized);
-		$this->assertInstanceOf(ErrorsCollection::class, $unserialized, 'Unserialized data is not ErrorsCollection class type but it should be #1');
-		$this->assertSame($instance->mode, $unserialized->mode, 'Serialization-unserialization fails #1');
-		$this->assertSame($instance->toArray(), $unserialized->toArray(), 'Serialization-unserialization fails #2');
+		$this->assertInstanceOf(ErrorsCollection::class, $unserialized, message: 'Unserialized data is not ErrorsCollection class type but it should be #1');
+		$this->assertSame($instance->mode, $unserialized->mode, message: 'Serialization-unserialization fails #1');
+		$this->assertSame($instance->toArray(), $unserialized->toArray(), message: 'Serialization-unserialization fails #2');
 
-		$this->assertIsArray($instance->toArray(), 'toArray doesn\'t makes an array');
-		$this->assertIsString($instance->toJson(), 'toJSON doesn\'t makes a string');
+		$this->assertIsArray($instance->toArray(), message: 'toArray doesn\'t makes an array');
+		$this->assertIsString($instance->toJson(), message: 'toJSON doesn\'t makes a string');
 	}
 
-	public function provideConstructorParams(): Generator
+	public static function provideConstructorParams(): Generator
 	{
 		foreach (ParamsMode::cases() as $mode) {
 			yield $mode->name => [
