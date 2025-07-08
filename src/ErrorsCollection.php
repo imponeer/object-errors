@@ -4,226 +4,198 @@ namespace Imponeer\ObjectErrors;
 
 use ArrayAccess;
 use Countable;
+use JsonException;
 use JsonSerializable;
-use Serializable;
+use Stringable;
 
 /**
  * Collection of errors
  */
-class ErrorsCollection implements ArrayAccess, Countable, Serializable, JsonSerializable
+class ErrorsCollection implements ArrayAccess, Countable, JsonSerializable, Stringable
 {
-	/**
-	 * Mode that says that only one param for adding is used
-	 */
-	const MODE_1_PARAM = 0;
+    /**
+     * Errors data
+     */
+    private array $errors = [];
 
-	/**
-	 * Mode that says two params are used
-	 */
-	const MODE_2_PARAMS = 1;
+    /**
+     * ErrorsCollection constructor.
+     *
+     * @param ParamsMode $mode Mode how this errors collection works
+     */
+    public function __construct(
+		public readonly ParamsMode $mode = ParamsMode::Mode1
+	)
+    {
+    }
 
-	/**
-	 * Mode that says that 2nd param is a used as prefix
-	 */
-	const MODE_2_AS_PREFIX = 2;
-	/**
-	 * Mode how this errors collection works
-	 *
-	 * @var int
-	 */
-	public $mode = self::MODE_1_PARAM;
-	/**
-	 * Errors data
-	 *
-	 * @var array
-	 */
-	private $errors = [];
+    /**
+     * Checks if offset exists
+     *
+     * @param mixed $offset
+     * @return bool
+     */
+    public function offsetExists(mixed $offset): bool
+    {
+        return isset($this->errors[$offset]);
+    }
 
-	/**
-	 * ErrorsCollection constructor.
-	 *
-	 * @param int $mode
-	 */
-	public function __construct($mode = self::MODE_1_PARAM)
-	{
-		$this->mode = $mode;
+    /**
+     * Gets by pos
+     *
+     * @param mixed $offset
+     *
+     * @return mixed
+     */
+    public function offsetGet(mixed $offset): mixed
+    {
+        return $this->errors[$offset];
+    }
+
+    /**
+     * Sets by pos
+     *
+     * @param mixed $offset
+     * @param mixed $value
+     */
+    public function offsetSet(mixed $offset, mixed $value): void
+    {
+        $this->errors[$offset] = $value;
+    }
+
+    /**
+     * Tries to unset by offset but instead returns error
+     *
+     * @param mixed $offset
+     *
+     * @throws UnsetErrorException
+     */
+    public function offsetUnset(mixed $offset): never
+    {
+        throw new UnsetErrorException();
+    }
+
+    /**
+     * Is empty?
+     *
+     * @return bool
+     */
+    public function isEmpty(): bool
+    {
+        return empty($this->errors);
+    }
+
+    /**
+     * Clear errors list
+     */
+    public function clear(): void
+    {
+        $this->errors = [];
+    }
+
+    /**
+     * Gets errors list as HTML
+     *
+     * @return string html listing the errors
+     */
+    public function getHtml(): string
+    {
+        return nl2br(
+            (string)$this
+        );
+    }
+
+    /**
+     * Converts errors list to string
+     *
+     * @return string
+     */
+    public function __toString(): string
+    {
+        if (empty($this->errors)) {
+            return '';
+        }
+
+		return implode(PHP_EOL, $this->errors);
 	}
 
-	/**
-	 * Checks if offset exists
-	 *
-	 * @param mixed $offset
-	 * @return bool
-	 */
-	public function offsetExists($offset)
-	{
-		return isset($this->errors[$offset]);
-	}
+    /**
+     * Adds an
+     */
+    public function add(mixed ...$err_data): void
+    {
+        switch ($this->mode) {
+            case ParamsMode::Mode1:
+                $this->errors[] = (string) $err_data[0];
+                break;
+            case ParamsMode::Mode2AsPrefix:
+                if (is_array($err_data[0])) {
+                    if (!isset($err_data[1])) {
+                        $err_data[1] = false;
+                    }
+                    foreach ($err_data[0] as $str) {
+                        $this->add($str, $err_data[1]);
+                    }
+                    return;
+                }
+                if (isset($err_data[1]) && ($err_data[1] !== false)) {
+                    $err_data[0] = sprintf("[%s] %s", $err_data[1], $err_data[0]);
+                }
+                $this->errors[] = $err_data[0];
+                break;
+            case ParamsMode::Mode2:
+                $this->errors[trim((string) $err_data[0])] = trim((string) $err_data[1]);
+                break;
+        }
+    }
 
-	/**
-	 * Gets by pos
-	 *
-	 * @param mixed $offset
-	 *
-	 * @return mixed
-	 */
-	public function offsetGet($offset)
-	{
-		return $this->errors[$offset];
-	}
+    /**
+     * @inheritDoc
+     */
+    public function count(): int
+    {
+        return count($this->errors);
+    }
 
-	/**
-	 * Sets by pos
-	 *
-	 * @param mixed $offset
-	 * @param mixed $value
-	 */
-	public function offsetSet($offset, $value)
-	{
-		$this->errors[$offset] = $value;
-	}
+    public function __serialize(): array
+    {
+        return [
+            $this->mode,
+            $this->errors
+        ];
+    }
 
-	/**
-	 * Tries to unset by offset but instead returns error
-	 *
-	 * @param mixed $offset
-	 *
-	 * @throws UnsetErrorException
-	 */
-	public function offsetUnset($offset)
-	{
-		throw new UnsetErrorException();
-	}
+    public function __unserialize(array $data): void
+    {
+        [$this->mode, $this->errors] = $data;
+    }
 
-	/**
-	 * Is empty?
-	 *
-	 * @return bool
-	 */
-	public function isEmpty()
-	{
-		return empty($this->errors);
-	}
+    /**
+     * @inheritDoc
+     */
+    public function jsonSerialize(): array
+    {
+        return $this->errors;
+    }
 
-	/**
-	 * Clear errors list
-	 */
-	public function clear()
-	{
-		$this->errors = [];
-	}
-
-	/**
-	 * Gets errors list as HTML
-	 *
-	 * @return string html listing the errors
-	 */
-	public function getHtml()
-	{
-		return nl2br(
-			$this->__toString()
-		);
-	}
-
-	/**
-	 * Converts errors list to string
-	 *
-	 * @return string
-	 */
-	public function __toString()
-	{
-		if (empty($this->errors)) {
-			return '';
-		} else {
-			return implode(PHP_EOL, $this->errors);
-		}
-	}
-
-	/**
-	 * Adds an
-	 *
-	 * @param array ...$err_data
-	 */
-	public function add(...$err_data)
-	{
-		switch ($this->mode) {
-			case self::MODE_1_PARAM:
-				$this->errors[] = $err_data[0];
-				break;
-			case self::MODE_2_AS_PREFIX:
-				if (is_array($err_data[0])) {
-					if (!isset($err_data[1])) {
-						$err_data[1] = false;
-					}
-					foreach ($err_data[0] as $str) {
-						$this->add($str, $err_data[1]);
-					}
-					return;
-				}
-				if (isset($err_data[1]) && ($err_data[1] !== false)) {
-					$err_data[0] = "[" . $err_data[1] . "] " . $err_data[0];
-				}
-				$this->errors[] = $err_data[0];
-				break;
-			case self::MODE_2_PARAMS:
-				$this->errors[trim($err_data[0])] = trim($err_data[1]);
-				break;
-		}
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function count()
-	{
-		return count($this->errors);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function serialize()
-	{
-		return serialize([
-			$this->mode,
-			$this->errors
-		]);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function unserialize($serialized)
-	{
-		list($this->mode, $this->errors) = unserialize($serialized);
-	}
-
-	/**
-	 * @inheritDoc
-	 */
-	public function jsonSerialize()
-	{
-		return $this->errors;
-	}
-
-	/**
-	 * Export data to array
-	 *
-	 * @return array
-	 */
-	public function toArray()
-	{
-		return $this->errors;
-	}
+    /**
+     * Export data to array
+     *
+     * @return array
+     */
+    public function toArray(): array
+    {
+        return $this->errors;
+    }
 
 	/**
 	 * Export data to json
 	 *
-	 * @return string
+	 * @throws JsonException
 	 */
-	public function toJson()
-	{
-		return json_encode($this);
-	}
+    public function toJson(): string
+    {
+        return json_encode($this, JSON_THROW_ON_ERROR);
+    }
 
 }
