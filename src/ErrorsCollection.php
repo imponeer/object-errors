@@ -24,9 +24,8 @@ class ErrorsCollection implements ArrayAccess, Countable, JsonSerializable, Stri
      * @param ParamsMode $mode Mode how this errors collection works
      */
     public function __construct(
-		public readonly ParamsMode $mode = ParamsMode::Mode1
-	)
-    {
+        public readonly ParamsMode $mode = ParamsMode::Mode1
+    ) {
     }
 
     /**
@@ -116,8 +115,8 @@ class ErrorsCollection implements ArrayAccess, Countable, JsonSerializable, Stri
             return '';
         }
 
-		return implode(PHP_EOL, $this->errors);
-	}
+        return implode(PHP_EOL, $this->errors);
+    }
 
     /**
      * Adds an
@@ -188,14 +187,13 @@ class ErrorsCollection implements ArrayAccess, Countable, JsonSerializable, Stri
         return $this->errors;
     }
 
-	/**
-	 * Export data to json
-	 *
-	 * @throws JsonException
-	 */
+    /**
+     * Export data to json
+     *
+     * @throws JsonException
+     */
     public function toJson(): string
     {
         return json_encode($this, JSON_THROW_ON_ERROR);
     }
-
 }
