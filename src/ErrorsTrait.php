@@ -11,10 +11,8 @@ trait ErrorsTrait
 
 	/**
 	 * Errors collection
-	 *
-	 * @var ErrorsCollection
 	 */
-	protected $errors;
+	protected ErrorsCollection $errors;
 
 	/**
 	 * ErrorsTrait constructor.
@@ -27,13 +25,13 @@ trait ErrorsTrait
 	/**
 	 * return the errors for this object as an array
 	 *
-	 * @param    bool $ashtml Format using HTML?
+	 * @param    bool $asHTML Format using HTML?
 	 *
 	 * @return array|string an array of errors
 	 */
-	public function getErrors($ashtml = true)
+	public function getErrors(bool $asHTML = true): array|string
 	{
-		return $ashtml ? $this->getHtmlErrors() : $this->errors->toArray();
+		return $asHTML ? $this->getHtmlErrors() : $this->errors->toArray();
 	}
 
 	/**
@@ -41,27 +39,23 @@ trait ErrorsTrait
 	 *
 	 * @param string $err_str error to add
 	 */
-	public function setErrors($err_str)
+	public function setErrors(string $err_str): void
 	{
 		call_user_func_array([$this->errors, 'add'], func_get_args());
 	}
 
 	/**
 	 * Returns the errors for this object as html
-	 *
-	 * @return string
 	 */
-	public function getHtmlErrors()
+	public function getHtmlErrors(): string
 	{
 		return $this->errors->getHtml();
 	}
 
 	/**
-	 * Has some errors
-	 *
-	 * @return bool
+	 * Has some errors?
 	 */
-	public function hasError()
+	public function hasError(): bool
 	{
 		return !$this->errors->isEmpty();
 	}

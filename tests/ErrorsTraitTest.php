@@ -1,5 +1,6 @@
 <?php
-namespace Imponeer\Tests\ObjectErrors;
+
+namespace Imponeer\ObjectErrors\Tests;
 
 use Imponeer\ObjectErrors\ErrorsTrait;
 use Mockery;
@@ -12,17 +13,16 @@ class ErrorsTraitTest extends TestCase
 	 * Creates mock for ErrorsTrait
 	 *
 	 * @return Mockery\Mock|ErrorsTrait
-	 *
-	 * @noinspection PhpReturnDocTypeMismatchInspection
 	 */
-	protected function createTraitMock() {
+	protected function createTraitMock()
+	{
 		$mock = Mockery::mock(ErrorsTrait::class)->makePartial();
 		$mock->__construct();
 
 		return $mock;
 	}
 
-	public function testGetErrors()
+	public function testGetErrors(): void
 	{
 		$mock = $this->createTraitMock();
 
@@ -40,14 +40,12 @@ class ErrorsTraitTest extends TestCase
 
 		} else {
 
-			$this->assertInternalType(
-				'array',
+			$this->assertIsArray(
 				$mock->getErrors(false),
 				'getErrors without param must return array'
 			);
 
-			$this->assertInternalType(
-				'string',
+			$this->assertIsString(
 				$mock->getErrors(true),
 				'getErrors without param must return string'
 			);
@@ -55,40 +53,25 @@ class ErrorsTraitTest extends TestCase
 		}
 	}
 
-	public function testGetHtmlErrors()
+	public function testGetHtmlErrors(): void
 	{
 		$mock = $this->createTraitMock();
 
-		if (method_exists($this, 'assertIsString')) {
-			$this->assertIsString(
-				$mock->getHtmlErrors(),
-				'getErrors without param must return array'
-			);
-		} else {
-			$this->assertInternalType(
-				'string',
-				$mock->getHtmlErrors(),
-				'getErrors without param must return array'
-			);
-		}
+		$this->assertIsString(
+			$mock->getHtmlErrors(),
+			'getErrors without param must return array'
+		);
 	}
 
-	public function testHasAndSetError()
+	public function testHasAndSetError(): void
 	{
 		$mock = $this->createTraitMock();
 
-		if (method_exists($this, 'assertIsBool')) {
-			$this->assertIsBool(
-				$mock->hasError(),
-				'hasError method should return bool'
-			);
-		} else {
-			$this->assertInternalType(
-				'bool',
-				$mock->hasError(),
-				'hasError method should return bool'
-			);
-		}
+		$this->assertIsBool(
+			$mock->hasError(),
+			'hasError method should return bool'
+		);
+
 		$this->assertFalse(
 			$mock->hasError(),
 			'When there are no errors hasError should return false'
